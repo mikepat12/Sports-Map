@@ -49,11 +49,27 @@ merged_2data <- merged_1data %>%
 ###########################################################
 # Creating Map
 ###########################################################
+icons <- makeIcon(
+    iconUrl = merged_2data$link2,
+    iconWidth = 31 * 215/230, iconHeight = 31,
+    iconAnchorX = 31 * 215/230/2, iconAnchorY = 16
+)
+
+merged_2data %>%
+    filter(league == 'NFL') %>%
+    leaflet() %>%
+    addTiles() %>%
+    addMarkers(~ lng, ~ lat, popup = ~ team_name, icon = icons)
+
+
+# Use test to try other image types. Popup format only works for unfiltered dataset
+test <- merged_2data %>%
+    filter(merged_2data$league == 'NFL')
 merged_2data %>%
     leaflet() %>%
     addTiles() %>%
-    addMarkers(~ lng, ~ lat, popup = ~ as.character(team_name))
-
+    addMarkers(~ lng, ~ lat, icon = icons, 
+               popup = paste(merged_2data$team_name, '<br>', merged_2data$stadium, '<br>')) 
 
 
 
